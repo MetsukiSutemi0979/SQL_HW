@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:8.0.34
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data:/var/lib/mysql
+      - D:/HomeworksQA/SQL_HW/db/cleanup:/docker-entrypoint-initdb.d
+      - D:/HomeworksQA/SQL_HW/schema:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=homework
+      - MYSQL_USER=homework
+      - MYSQL_PASSWORD=pass
