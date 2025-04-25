@@ -1,8 +1,11 @@
-CREATE USER IF NOT EXISTS 'homework'@'%' IDENTIFIED BY 'pass';
-GRANT ALL PRIVILEGES ON homework.* TO 'homework'@'%';
-FLUSH PRIVILEGES;
+CREATE DATABASE IF NOT EXISTS homework;
+USE homework;
 
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS auth_codes;
+DROP TABLE IF EXISTS card_transactions;
+
 CREATE TABLE users
 (
     id       CHAR(36) PRIMARY KEY,
@@ -11,7 +14,6 @@ CREATE TABLE users
     status   VARCHAR(255)        NOT NULL DEFAULT 'active'
 );
 
-DROP TABLE IF EXISTS cards;
 CREATE TABLE cards
 (
     id                 CHAR(36) PRIMARY KEY,
@@ -21,7 +23,6 @@ CREATE TABLE cards
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-DROP TABLE IF EXISTS auth_codes;
 CREATE TABLE auth_codes
 (
     id      CHAR(36) PRIMARY KEY,
@@ -31,7 +32,6 @@ CREATE TABLE auth_codes
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-DROP TABLE IF EXISTS card_transactions;
 CREATE TABLE card_transactions
 (
     id                CHAR(36) PRIMARY KEY,
