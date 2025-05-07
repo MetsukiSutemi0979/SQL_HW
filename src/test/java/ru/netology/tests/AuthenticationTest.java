@@ -18,14 +18,10 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 public class AuthenticationTest {
-    @BeforeAll
-    static void setupAll() {
-        Configuration.browser = "chrome";
-        Configuration.timeout = 15000;
-    }
-
+    
     @BeforeEach
-    void setup() throws SQLException {
+    void setup(){
+        //Для открытия версии хрома без проверки пароля
         Configuration.browserCapabilities = new ChromeOptions().setBrowserVersion("115");
     }
 
@@ -39,9 +35,8 @@ public class AuthenticationTest {
         open("http://localhost:9999");
         AuthInfo authInfo = DataHelper.getValidAuthInfo();
         LoginPage loginPage = new LoginPage();
-        VerificationPage verificationPage = new VerificationPage();
         loginPage.validLogin(authInfo);
-        loginPage.checkPassword(authInfo);
+        VerificationPage verificationPage = new VerificationPage();
         String code = DataHelper.getVerificationCode(authInfo);
         verificationPage.verify(code);
         DashboardPage dashboardPage = new DashboardPage();

@@ -1,6 +1,7 @@
 package ru.netology.utils;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.*;
@@ -30,36 +31,30 @@ public class DBHelper {
         execute("DELETE FROM users;");
     }
 
-    public static <T> T querySingle(String sql, ScalarHandler<T> handler, Object... params) throws SQLException {
-        try (var conn = getConnection()) {
-            return new QueryRunner().query(conn, sql, handler, params);
-        }
-    }
-
-    public static String getLatestCode(String login) throws SQLException {
-        String code = null;
+    public static String getLatestCode(String login) {
         String sql = """
-            SELECT ac.code
-            FROM auth_codes ac
-            JOIN users u ON ac.user_id = u.id
-            WHERE u.login = ?
-            ORDER BY ac.created DESC
-            LIMIT 1
-        """;
+                    SELECT ac.code
+                    FROM auth_codes ac
+                    JOIN users u ON ac.user_id = u.id
+                    WHERE u.login = ?
+                    ORDER BY ac.created DESC
+                    LIMIT 1
+                """;
 
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, login);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    code = rs.getString("code");
-                }
-            }
+        QueryRunner qr = new QueryRunner();
+        ResultSetHandler<String> handler = new ScalarHandler<>();
+
+        try (Connection conn = getConnection()) {
+            return qr.query(
+                    conn,
+                    sql,
+                    handler,
+                    login
+            );
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return code;
     }
 }
 

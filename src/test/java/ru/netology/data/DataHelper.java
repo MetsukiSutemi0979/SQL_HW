@@ -13,7 +13,6 @@ public class DataHelper {
     }
 
     public static String getVerificationCode(AuthInfo authInfo) throws SQLException {
-        return DBHelper.getLatestCode(AuthInfo.getLogin());
-
+        return DBHelper.getLatestCode(authInfo.getLogin()); // или authInfo.login()
     }
 }

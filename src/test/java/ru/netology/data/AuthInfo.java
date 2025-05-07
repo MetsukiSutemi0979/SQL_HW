@@ -1,8 +1,11 @@
 package ru.netology.data;
 
+import lombok.Value;
+
+@Value
 public class AuthInfo {
     private static String login = "";
-    private final String password;
+    private static String password;
 
     public AuthInfo(String login, String password) {
         this.login = login;
@@ -13,7 +16,7 @@ public class AuthInfo {
         return login;
     }
 
-    public String getPassword() {
+    public static String getPassword(){
         return password;
     }
 }

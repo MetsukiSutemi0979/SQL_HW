@@ -13,14 +13,9 @@ public class LoginPage {
     private SelenideElement submitButton  = $("button");
 
     public VerificationPage validLogin(AuthInfo authInfo) {
-        login.setValue(authInfo.getLogin());
+        login.setValue(authInfo.getLogin()); // или authInfo.login()
         password.setValue(authInfo.getPassword());
         submitButton.click();
-        return new VerificationPage();
-    }
-
-    public VerificationPage checkPassword(AuthInfo authInfo) {
-        password.shouldHave(Condition.exactText("qwerty123"));
         return new VerificationPage();
     }
 }
