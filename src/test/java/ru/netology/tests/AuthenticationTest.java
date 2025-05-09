@@ -2,6 +2,8 @@ package ru.netology.tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.github.javafaker.Faker;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import ru.netology.data.AuthInfo;
@@ -18,15 +20,9 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 public class AuthenticationTest {
-    
-    @BeforeEach
-    void setup(){
-        //Для открытия версии хрома без проверки пароля
-        Configuration.browserCapabilities = new ChromeOptions().setBrowserVersion("115");
-    }
 
-    @AfterEach
-    void cleanup() throws SQLException {
+    @AfterAll
+    static void cleanup() throws SQLException {
         DBHelper.clearData();
     }
 

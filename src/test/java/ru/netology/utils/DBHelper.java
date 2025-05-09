@@ -16,7 +16,7 @@ public class DBHelper {
             System.getenv().getOrDefault("DB_PASS","pass"));
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/homework", "homework", "pass");
     }
 
     public static void execute(String sql, Object... params) throws SQLException {
@@ -31,7 +31,7 @@ public class DBHelper {
         execute("DELETE FROM users;");
     }
 
-    public static String getLatestCode(String login) {
+    public static String getLatestCode(String login) throws SQLException {
         String sql = """
                     SELECT ac.code
                     FROM auth_codes ac
