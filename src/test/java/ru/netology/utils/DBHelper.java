@@ -1,5 +1,6 @@
 package ru.netology.utils;
 
+import com.github.javafaker.Faker;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -7,14 +8,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import java.sql.*;
 
 public class DBHelper {
-    private static final String URL = System.getProperty("jdbc.url",
-            System.getenv().getOrDefault("DB_URL",
-                    "jdbc:mysql://localhost:3306/homework"));
-    private static final String USER = System.getProperty("jdbc.user",
-            System.getenv().getOrDefault("DB_USER","homework"));
-    private static final String PASSWORD = System.getProperty("jdbc.password",
-            System.getenv().getOrDefault("DB_PASS","pass"));
-
+    
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/homework", "homework", "pass");
     }
@@ -54,6 +48,16 @@ public class DBHelper {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void setUp() throws SQLException {
+        var faker = new Faker();
+        var runner = new QueryRunner();
+        var dataSQL = "INSERT INTO users(login, password) VALUES (?, ?);";
+        try (var conn = getConnection()){
+            runner.update(conn,dataSQL, faker.name().username(), "pass");
+            runner.update(conn,dataSQL, faker.name().username(), "pass");
         }
     }
 }
